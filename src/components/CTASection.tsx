@@ -96,8 +96,9 @@ export function CTASection() {
             <Image
               src="/images_homes.png"
               alt="A beautifully crafted modern home interior"
-              className="w-full h-full object-cover object-center"
-              loading="lazy"
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </motion.div>
         </div>
