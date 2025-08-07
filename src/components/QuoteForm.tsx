@@ -39,54 +39,46 @@ interface QuoteFormProps {
 
 export function QuoteForm({ className = "" }: QuoteFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [state, handleSubmit] = useForm("xgvyjlzg"); // Replace with your Formspree ID
+  const [state, handleSubmit] = useForm("xgvyjlzg");
 
-  // --- REFACTOR: State management ---
   const [formError, setFormError] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [service, setService] = useState("");
 
-  // --- REFACTOR: Simplified CAPTCHA state ---
   const [num1, setNum1] = useState(0);
   const [num2, setNum2] = useState(0);
 
   const generateCaptcha = () => {
-    setNum1(Math.floor(Math.random() * 9) + 1); // 1-9
-    setNum2(Math.floor(Math.random() * 9) + 1); // 1-9
+    setNum1(Math.floor(Math.random() * 9) + 1);
+    setNum2(Math.floor(Math.random() * 9) + 1);
   };
 
   useEffect(() => {
     generateCaptcha();
   }, []);
 
-  // --- REFACTOR: Streamlined form submission handler ---
   const handleFormSubmission = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormError(null); // Clear previous errors
+    setFormError(null);
 
     const formData = new FormData(e.currentTarget);
     const captchaInput = formData.get("captcha") as string;
     const honeypot = formData.get("hiddenTrap") as string;
 
-    // Honeypot check
     if (honeypot) {
       console.log("Bot detected.");
       return;
     }
 
-    // CAPTCHA validation
     if (parseInt(captchaInput) !== num1 + num2) {
       setFormError("Incorrect answer to the math problem. Please try again.");
       generateCaptcha();
       return;
     }
-
-    // Pass the event to the Formspree handler
     handleSubmit(e);
   };
 
-  // --- REFACTOR: Handle success state from Formspree ---
   useEffect(() => {
     if (state.succeeded) {
       setShowSuccessModal(true);
@@ -99,7 +91,6 @@ export function QuoteForm({ className = "" }: QuoteFormProps) {
 
   return (
     <>
-      {/* --- BRANDING: On-brand Success Modal --- */}
       <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
         <DialogContent className="bg-white/90 backdrop-blur-md text-center py-10 border-amber-400">
           <DialogHeader className="items-center justify-center space-y-4">
@@ -126,7 +117,6 @@ export function QuoteForm({ className = "" }: QuoteFormProps) {
         </DialogContent>
       </Dialog>
 
-      {/* Form Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -150,7 +140,6 @@ export function QuoteForm({ className = "" }: QuoteFormProps) {
               onSubmit={handleFormSubmission}
               noValidate
               className="space-y-6">
-              {/* --- REFACTOR: Simplified Honeypot --- */}
               <input
                 type="text"
                 name="hiddenTrap"
@@ -182,12 +171,11 @@ export function QuoteForm({ className = "" }: QuoteFormProps) {
                     name="lastName"
                     required
                     autoComplete="family-name"
-                    placeholder="e.g., Authur"
+                    placeholder="e.g., Arthur"
                     className="!bg-amber-500/10 placeholder:!text-white/70 !border-amber-500/20"
                   />
                 </div>
               </div>
-
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-amber-50/90 block">
                   Email Address *
@@ -208,17 +196,13 @@ export function QuoteForm({ className = "" }: QuoteFormProps) {
                   className="text-red-400 text-sm"
                 />
               </div>
-
               <div className="space-y-2">
                 <Label htmlFor="service" className="text-amber-50/90 block">
                   Service Needed
                 </Label>
-                <Select name="service" onValueChange={setService}>
+                <Select name="service_select" onValueChange={setService}>
                   <SelectTrigger className="!border-amber-500/20 !bg-amber-500/10 placeholder:!text-white/70">
-                    <SelectValue
-                      className="border-amber-500/20 !bg-amber-500/10 placeholder:text-white/70 text=white"
-                      placeholder="Select a service"
-                    />
+                    <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
                   <SelectContent className="bg-amber-400 border-amber-500/10">
                     <SelectItem value="cabinet-making">
@@ -233,8 +217,9 @@ export function QuoteForm({ className = "" }: QuoteFormProps) {
                     </SelectItem>
                   </SelectContent>
                 </Select>
+                {/* --- FIX: Added hidden input to use the 'service' state --- */}
+                <input type="hidden" name="service" value={service} />
               </div>
-
               <div className="space-y-2">
                 <Label htmlFor="message" className="text-amber-50/90 block">
                   Project Details *
@@ -254,7 +239,6 @@ export function QuoteForm({ className = "" }: QuoteFormProps) {
                   className="text-red-400 text-sm"
                 />
               </div>
-
               <div className="space-y-2">
                 <Label
                   htmlFor="captcha"
@@ -281,7 +265,6 @@ export function QuoteForm({ className = "" }: QuoteFormProps) {
                 </div>
               </div>
 
-              {/* --- UX: Display form-level errors here --- */}
               {formError && (
                 <div className="flex items-center gap-2 text-red-400 text-sm p-2 bg-red-500/10 rounded-md">
                   <AlertTriangle className="h-4 w-4" />

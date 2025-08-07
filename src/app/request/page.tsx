@@ -3,7 +3,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "@formspree/react";
+import { useForm, ValidationError } from "@formspree/react";
 import { SERVICES, SITE_CONFIG } from "@/lib/constants";
 import React from "react";
 
@@ -28,7 +28,13 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { CheckCircle2, RefreshCw, ArrowLeft, ArrowRight } from "lucide-react";
+import {
+  CheckCircle2,
+  RefreshCw,
+  ArrowLeft,
+  ArrowRight,
+  AlertTriangle,
+} from "lucide-react";
 import {
   Stepper,
   StepperIndicator,
@@ -220,22 +226,8 @@ export default function RequestPage() {
                   <StepperTrigger
                     className="flex flex-col md:flex-row items-center gap-2 text-sm text-center"
                     onClick={() => setCurrentStep(step - 1)}>
-                    <StepperIndicator
-                      className="
-                      w-8 h-8 font-bold transition-colors duration-300
-                      data-[state=inactive]:bg-transparent data-[state=inactive]:border-2 data-[state=inactive]:border-amber-400/30 data-[state=inactive]:text-amber-400/30
-                      data-[state=active]:bg-amber-400 data-[state=active]:text-gray-900
-                      data-[state=completed]:bg-amber-400/80 data-[state=completed]:text-gray-900
-                    "
-                    />
-                    {/* --- FINAL POLISH: Styled the title text --- */}
-                    <StepperTitle
-                      className="
-                      transition-colors duration-300
-                      data-[state=inactive]:text-amber-50/50
-                      data-[state=active]:text-amber-400
-                      data-[state=completed]:text-amber-400
-                    ">
+                    <StepperIndicator className="w-8 h-8 font-bold transition-colors duration-300 data-[state=inactive]:bg-transparent data-[state=inactive]:border-2 data-[state=inactive]:border-amber-400/30 data-[state=inactive]:text-amber-400/30 data-[state=active]:bg-amber-400 data-[state=active]:text-gray-900 data-[state=completed]:bg-amber-400/80 data-[state=completed]:text-gray-900" />
+                    <StepperTitle className="transition-colors duration-300 data-[state=inactive]:text-amber-50/50 data-[state=active]:text-amber-400 data-[state=completed]:text-amber-400">
                       {title}
                     </StepperTitle>
                   </StepperTrigger>
@@ -277,31 +269,45 @@ export default function RequestPage() {
                 </motion.div>
               </AnimatePresence>
 
-              <div className="absolute bottom-0 left-0 right-0 flex justify-between items-center pt-8 border-t border-amber-400/10">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={handlePrev}
-                  disabled={currentStep === 0}
-                  className="disabled:opacity-50">
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Previous
-                </Button>
-                {currentStep < steps.length - 1 && (
-                  <Button type="button" onClick={handleNext}>
-                    Next <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+              <div className="absolute bottom-0 left-0 right-0 space-y-4">
+                {/* --- FIX: Display the formError state when it exists --- */}
+                {formError && (
+                  <div className="flex items-center gap-2 text-red-400 text-sm p-3 bg-red-500/10 rounded-md">
+                    <AlertTriangle className="h-4 w-4" />
+                    <span>{formError}</span>
+                  </div>
                 )}
-                {currentStep === steps.length - 1 && (
+                <ValidationError
+                  errors={state.errors}
+                  className="text-red-400 text-sm"
+                />
+
+                <div className="flex justify-between items-center pt-4 border-t border-amber-400/10">
                   <Button
-                    type="submit"
-                    disabled={state.submitting}
-                    size="lg"
-                    className="text-lg">
-                    {state.submitting
-                      ? "Submitting..."
-                      : "Submit Quote Request"}
+                    type="button"
+                    variant="ghost"
+                    onClick={handlePrev}
+                    disabled={currentStep === 0}
+                    className="disabled:opacity-50">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous
                   </Button>
-                )}
+                  {currentStep < steps.length - 1 && (
+                    <Button type="button" onClick={handleNext}>
+                      Next <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  )}
+                  {currentStep === steps.length - 1 && (
+                    <Button
+                      type="submit"
+                      disabled={state.submitting}
+                      size="lg"
+                      className="text-lg">
+                      {state.submitting
+                        ? "Submitting..."
+                        : "Submit Quote Request"}
+                    </Button>
+                  )}
+                </div>
               </div>
             </form>
           </motion.div>
@@ -324,13 +330,8 @@ const Step1 = ({
       Personal Information
     </legend>
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-      <div className="space-y-4">
-        <Label
-          id="firstName"
-          htmlFor="firstName"
-          className="text-white/70 block">
-          First Name *
-        </Label>
+      <div className="space-y-2">
+        <Label htmlFor="firstName">First Name *</Label>
         <Input
           id="firstName"
           name="firstName"
@@ -340,13 +341,10 @@ const Step1 = ({
             setFormData({ ...formData, firstName: e.target.value })
           }
           placeholder="e.g., Jane"
-          className="!border-amber-500/20 !bg-amber-500/10 text-white placeholder:!text-white/70"
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="lastName" className="text-white/70 block">
-          Last Name *
-        </Label>
+        <Label htmlFor="lastName">Last Name *</Label>
         <Input
           id="lastName"
           name="lastName"
@@ -356,15 +354,12 @@ const Step1 = ({
             setFormData({ ...formData, lastName: e.target.value })
           }
           placeholder="e.g., Smith"
-          className="!border-amber-500/20 !bg-amber-500/10 text-white placeholder:!text-white/70"
         />
       </div>
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
       <div className="space-y-2">
-        <Label className="text-white/70 block" htmlFor="email">
-          Email Address *
-        </Label>
+        <Label htmlFor="email">Email Address *</Label>
         <Input
           id="email"
           name="email"
@@ -373,13 +368,10 @@ const Step1 = ({
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           placeholder="you@example.com"
-          className="!border-amber-500/20 !bg-amber-500/10 text-white placeholder:!text-white/70"
         />
       </div>
       <div className="space-y-2">
-        <Label className="text-white/70 block" htmlFor="phone">
-          Phone Number *
-        </Label>
+        <Label htmlFor="phone">Phone Number *</Label>
         <Input
           id="phone"
           name="phone"
@@ -388,15 +380,11 @@ const Step1 = ({
           value={formData.phone}
           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
           placeholder="(317) 555-1234"
-          className="!border-amber-500/20 !bg-amber-500/10 text-white placeholder:!text-white/70"
         />
       </div>
     </div>
-    {/* --- FIX: Replaced undefined 'id' with the correct string "address" --- */}
     <div className="space-y-2">
-      <Label className="text-white/70 block" htmlFor="address">
-        Property Address *
-      </Label>
+      <Label htmlFor="address">Property Address *</Label>
       <Textarea
         id="address"
         name="address"
@@ -404,7 +392,6 @@ const Step1 = ({
         placeholder="123 Main St, Indianapolis, IN"
         value={formData.address}
         onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-        className="border-amber-500/20 bg-amber-500/10 text-white placeholder:text-white/70"
       />
     </div>
   </fieldset>
@@ -422,9 +409,7 @@ const Step2 = ({
       Project Details
     </legend>
     <div className="space-y-2">
-      <Label className="text-white/70 block" htmlFor="serviceType">
-        Primary Service Needed *
-      </Label>
+      <Label htmlFor="serviceType">Primary Service Needed *</Label>
       <Select
         name="serviceType"
         required
@@ -432,7 +417,7 @@ const Step2 = ({
         onValueChange={(value) =>
           setFormData({ ...formData, serviceType: value })
         }>
-        <SelectTrigger className="border-amber-500/20 bg-amber-500/10 text-white placeholder:text-white/70">
+        <SelectTrigger>
           <SelectValue placeholder="Select a service" />
         </SelectTrigger>
         <SelectContent>
@@ -446,9 +431,7 @@ const Step2 = ({
       </Select>
     </div>
     <div className="space-y-2">
-      <Label className="text-white/70 block" htmlFor="projectDescription">
-        Project Description *
-      </Label>
+      <Label htmlFor="projectDescription">Project Description *</Label>
       <Textarea
         id="projectDescription"
         name="projectDescription"
@@ -459,21 +442,18 @@ const Step2 = ({
         onChange={(e) =>
           setFormData({ ...formData, projectDescription: e.target.value })
         }
-        className="border-amber-500/20 bg-amber-500/10 text-white placeholder:text-white/70"
       />
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
       <div className="space-y-2">
-        <Label className="text-white/70 block" htmlFor="budget">
-          Estimated Budget (USD)
-        </Label>
+        <Label htmlFor="budget">Estimated Budget (USD)</Label>
         <Select
           name="budget"
           value={formData.budget}
           onValueChange={(value) =>
             setFormData({ ...formData, budget: value })
           }>
-          <SelectTrigger className="border-amber-500/20 bg-amber-500/10 text-white placeholder:text-white/70">
+          <SelectTrigger>
             <SelectValue placeholder="Select budget range" />
           </SelectTrigger>
           <SelectContent>
@@ -485,16 +465,14 @@ const Step2 = ({
         </Select>
       </div>
       <div className="space-y-2">
-        <Label className="text-white/70 block" htmlFor="timeline">
-          Preferred Timeline
-        </Label>
+        <Label htmlFor="timeline">Preferred Timeline</Label>
         <Select
           name="timeline"
           value={formData.timeline}
           onValueChange={(value) =>
             setFormData({ ...formData, timeline: value })
           }>
-          <SelectTrigger className="border-amber-500/20 bg-amber-500/10 text-white placeholder:text-white/70">
+          <SelectTrigger>
             <SelectValue placeholder="Select timeline" />
           </SelectTrigger>
           <SelectContent>
@@ -524,45 +502,25 @@ const Step3 = ({
   <fieldset className="space-y-6">
     <legend className="text-2xl font-bold text-white mb-4">Final Steps</legend>
     <div className="space-y-3">
-      <Label className="text-white/70 block" htmlFor="hearAbout">
-        How did you hear about us?
-      </Label>
+      <Label htmlFor="hearAbout">How did you hear about us?</Label>
       <RadioGroup
         name="hearAbout"
         value={formData.hearAbout}
         onValueChange={(value) =>
           setFormData({ ...formData, hearAbout: value })
         }
-        className="[--primary:var(--color-amber-400)] [--border:var(--color-amber-400)] [--ring:var(--color-amber-300)] in-[.dark]:[--primary:var(--color-amber-400)] in-[.dark]:[--ring:var(--color-amber-900)] flex flex-wrap gap-x-6 gap-y-2">
+        className="flex flex-wrap gap-x-6 gap-y-2">
         <div className="flex items-center space-x-2">
-          <RadioGroupItem
-            className="border-amber-400"
-            value="google"
-            id="google"
-          />
-          <Label className="text-white" htmlFor="google">
-            Google
-          </Label>
+          <RadioGroupItem value="google" id="google" />
+          <Label htmlFor="google">Google</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <RadioGroupItem
-            className="border-amber-400"
-            value="social"
-            id="social"
-          />
-          <Label className="text-white" htmlFor="social">
-            Social Media
-          </Label>
+          <RadioGroupItem value="social" id="social" />
+          <Label htmlFor="social">Social Media</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <RadioGroupItem
-            className="border-amber-400"
-            value="referral"
-            id="referral"
-          />
-          <Label className="text-white" htmlFor="referral">
-            Referral
-          </Label>
+          <RadioGroupItem value="referral" id="referral" />
+          <Label htmlFor="referral">Referral</Label>
         </div>
       </RadioGroup>
     </div>
@@ -572,18 +530,12 @@ const Step3 = ({
         name="consent"
         required
         checked={formData.consent}
-        className="border-amber-400"
         onCheckedChange={(checked) =>
           setFormData({ ...formData, consent: checked as boolean })
         }
-        style={
-          {
-            "--primary": "var(--color-amber-400)",
-          } as React.CSSProperties
-        }
       />
       <div className="grid gap-1.5 leading-none">
-        <Label className="text-white/70 block" htmlFor="consent">
+        <Label htmlFor="consent">
           I consent to be contacted by {SITE_CONFIG.name} regarding my inquiry.*
         </Label>
         <p className="text-sm text-amber-50/50">
@@ -591,8 +543,8 @@ const Step3 = ({
         </p>
       </div>
     </div>
-    <div className="space-y-4">
-      <Label htmlFor="captcha" className="text-white/70 block">
+    <div className="space-y-2 rounded-md bg-amber-500/10 p-4 border border-amber-500/20">
+      <Label htmlFor="captcha" className="font-semibold">
         Spam Check: What is {num1} + {num2}? *
       </Label>
       <div className="flex items-center gap-2">
@@ -601,7 +553,7 @@ const Step3 = ({
           name="captcha"
           type="number"
           required
-          className="grow !border-amber-500/20 !bg-amber-500/10 text-white placeholder:!text-white/70"
+          className="grow"
         />
         <Button
           type="button"
