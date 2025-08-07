@@ -1,12 +1,10 @@
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 import React from "react";
 
 function ContactItem({
   icon,
   title,
   value,
-  gradient,
+
   hoverColor,
 }: {
   icon: React.ReactNode;

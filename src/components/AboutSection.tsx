@@ -89,7 +89,7 @@ export function AboutSection() {
               every home deserves professional execution.
             </p>
             <p>
-              Over the years, we've built a reputation for excellence by
+              Over the years, we&apos;ve built a reputation for excellence by
               consistently delivering outstanding results. We believe that
               quality work speaks for itself, and our portfolio reflects our
               unwavering commitment to our craft.
@@ -155,8 +155,8 @@ export function AboutSection() {
             Ready to Work Together?
           </h2>
           <p className="text-xl text-gray-800 mb-8 max-w-2xl mx-auto">
-            Let's discuss your project and see how we can bring your vision to
-            life with our expertise.
+            Let&apos;s discuss your project and see how we can bring your vision
+            to life with our expertise.
           </p>
           <Button
             asChild

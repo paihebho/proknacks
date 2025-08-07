@@ -71,7 +71,7 @@ export function PortfolioCard({
         {item.testimonial && (
           <div className="mt-4 p-3 bg-gray-800/50 border-l-2 border-amber-400">
             <blockquote className="text-sm italic text-amber-50/90">
-              "{item.testimonial.quote}"
+              &quot;{item.testimonial.quote}&quot;
             </blockquote>
             <p className="text-xs mt-2 font-semibold text-amber-50/70 text-right">
               — {item.testimonial.author}

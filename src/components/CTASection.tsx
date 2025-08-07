@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Phone, Mail, ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
 import Link from "next/link";
+import Image from "next/image";
 
 export function CTASection() {
   return (
@@ -30,7 +31,7 @@ export function CTASection() {
             </h2>
 
             <p className="text-lg text-amber-50/70 max-w-lg leading-relaxed">
-              Join hundreds of satisfied customers across Nigeria who've
+              Join hundreds of satisfied customers across Nigeria who&apos;ve
               transformed their spaces with {SITE_CONFIG.name}. Your vision,
               crafted with our expertise, is just a conversation away.
             </p>
@@ -92,7 +93,7 @@ export function CTASection() {
               clipPath: "polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%)",
             }}>
             <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/50 to-transparent z-10" />
-            <img
+            <Image
               src="/images_homes.png"
               alt="A beautifully crafted modern home interior"
               className="w-full h-full object-cover object-center"

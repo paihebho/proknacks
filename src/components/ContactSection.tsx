@@ -51,8 +51,8 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             className="mt-4 text-lg md:text-xl text-amber-50/70 max-w-3xl mx-auto">
-            Have a question or a project in mind? We'd love to hear from you.
-            Reach out and let's start building together.
+            Have a question or a project in mind? We&apos;d love to hear from
+            you. Reach out and let&apos;s start building together.
           </motion.p>
         </div>
       </section>

@@ -1,14 +1,4 @@
-import {
-  Award,
-  CheckCircle,
-  Clock,
-  Droplets,
-  Headset,
-  Palette,
-  Shield,
-  Wrench,
-  Zap,
-} from "lucide-react";
+import { CheckCircle, Clock, Headset } from "lucide-react";
 
 export interface Service {
   id: string;

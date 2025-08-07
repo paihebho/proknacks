@@ -9,25 +9,12 @@ import "yet-another-react-lightbox/styles.css";
 
 import { PortfolioCard } from "@/components/PortfolioCard";
 import { Button } from "@/components/ui/button";
-// --- FIX: Import the new PortfolioItem type along with the data ---
+
 import {
   allCategories,
   portfolioItems,
   type PortfolioItem,
 } from "@/data/portfolio";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1 },
-};
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState("All");

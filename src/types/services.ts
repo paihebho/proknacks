@@ -1,5 +1,4 @@
 // types/services.ts
-import type { LucideIcon } from "lucide-react";
 import * as LucideIcons from "lucide-react";
 
 export type Service = {

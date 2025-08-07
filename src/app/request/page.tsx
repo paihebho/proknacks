@@ -3,8 +3,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useForm, ValidationError } from "@formspree/react";
-import { generateMetadata } from "@/lib/metadata";
+import { useForm } from "@formspree/react";
 import { SERVICES, SITE_CONFIG } from "@/lib/constants";
 import React from "react";
 
@@ -29,13 +28,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import {
-  CheckCircle2,
-  AlertTriangle,
-  RefreshCw,
-  ArrowLeft,
-  ArrowRight,
-} from "lucide-react";
+import { CheckCircle2, RefreshCw, ArrowLeft, ArrowRight } from "lucide-react";
 import {
   Stepper,
   StepperIndicator,
@@ -176,8 +169,8 @@ export default function RequestPage() {
               Quote Request Sent!
             </DialogTitle>
             <DialogDescription className="text-gray-600 !mt-2">
-              Thank you! We've received your request and will contact you within
-              24 hours.
+              Thank you! We&apos;ve received your request and will contact you
+              within 24 hours.
             </DialogDescription>
           </DialogHeader>
           <Button

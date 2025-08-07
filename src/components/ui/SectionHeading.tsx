@@ -1,12 +1,6 @@
 import React from "react";
 
-function SectionHeading({
-  title,
-  gradient,
-}: {
-  title: string;
-  gradient: string;
-}) {
+function SectionHeading({ title }: { title: string; gradient: string }) {
   return (
     <h4 className="text-xl font-bold text-white mb-8 relative">
       {title}

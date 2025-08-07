@@ -100,8 +100,8 @@ export default function ServicesPage() {
             Have a Project in Mind?
           </h2>
           <p className="text-xl text-gray-800 mb-8 max-w-2xl mx-auto">
-            Let's turn your vision into reality. Contact us today for a free
-            consultation and quote.
+            Let&apos;s turn your vision into reality. Contact us today for a
+            free consultation and quote.
           </p>
           <Button
             asChild

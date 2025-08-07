@@ -1,6 +1,5 @@
 // app/about/page.tsx
 
-import { ArrowRight, Award, ShieldCheck, Star } from "lucide-react";
 import { generateMetadata } from "@/lib/metadata";
 import { AboutSection } from "@/components/AboutSection";
 
@@ -16,31 +15,6 @@ export const metadata = generateMetadata({
   ],
   path: "/about",
 });
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 20,
-      duration: 0.6,
-    },
-  },
-};
 
 export default function AboutPage() {
   return (

@@ -87,8 +87,8 @@ export default function ContactForm() {
               Message Sent!
             </DialogTitle>
             <DialogDescription className="text-gray-600 !mt-2">
-              Thank you for reaching out! We've received your message and will
-              get back to you shortly.
+              Thank you for reaching out! We&apos;ve received your message and
+              will get back to you shortly.
             </DialogDescription>
           </DialogHeader>
           <Button

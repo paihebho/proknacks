@@ -1,7 +1,7 @@
 // components/TestimonialsSection.tsx
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { testimonials } from "@/data/siteData";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
